@@ -16,6 +16,7 @@ public class Main {
         final PopupMenu popup = new PopupMenu();
         final TrayIcon trayIcon =
                 new TrayIcon(createImage("bulb.gif", "tray icon"));
+        trayIcon.setToolTip("Monitor Control");
         final SystemTray tray = SystemTray.getSystemTray();
 
         // Create a pop-up menu components
