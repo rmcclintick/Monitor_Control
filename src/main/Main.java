@@ -18,7 +18,7 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        Monitor[] monitors = ListReader.readMonitorList("output.txt");
+        Monitor[] monitors = ListReader.readMonitorList("multimonitortool-x64/output.txt");
         createSysTray(monitors);
     }
 
@@ -31,8 +31,9 @@ public class Main {
         }
         final PopupMenu popup = new PopupMenu();
         final TrayIcon trayIcon =
-                new TrayIcon(createImage("bulb.gif", "tray icon"));
+                new TrayIcon(createImage("icon.png", "tray icon"));
         trayIcon.setToolTip("Monitor Control");
+        trayIcon.setImageAutoSize(true);
         final SystemTray tray = SystemTray.getSystemTray();
 
         // Create a pop-up menu components
