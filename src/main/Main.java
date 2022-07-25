@@ -10,6 +10,7 @@ import java.net.URL;
 public class Main {
     private final static String[] getListCmd = new String[]{"multimonitortool-x64/MultiMonitorTool.exe",  "/stabular", "output.txt"};
     private final static String[] toggleDisplayCmd = new String[]{"multimonitortool-x64/MultiMonitorTool.exe",  "/switch", ""};
+    private final static String[] setMainDisplayCmd = new String[]{"multimonitortool-x64/MultiMonitorTool.exe",  "/SetPrimary", ""};
     public static void main(String[] args)
     {
         try {
@@ -17,8 +18,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        Monitor[] monitors = ListReader.readMonitorList("multimonitortool-x64/output.txt");
+        Monitor[] monitors = ListReader.readMonitorList("output.txt");
         createSysTray(monitors);
     }
 
@@ -48,7 +48,7 @@ public class Main {
             item.addItemListener(e -> {
                 String[] cmd = toggleDisplayCmd.clone();
                 cmd[2] = monitors[finalI].getId();
-                System.out.println("Attempting toggle on: " + monitors[finalI]);
+                System.out.println("Attempting toggle on: " + monitors[finalI].getName());
                 try {
                     Runtime.getRuntime().exec(cmd);
                 } catch (IOException ex) {
@@ -60,9 +60,18 @@ public class Main {
         }
 
         Menu setMainMenu = new Menu("Set Main Display");
-        for (Monitor monitor : monitors) {
-            CheckboxMenuItem item = new CheckboxMenuItem(monitor.getName());
-            if (monitor.isMain()) item.setState(true);
+        for (int i = 0; i < monitors.length; i++) {
+            MenuItem item = new MenuItem(monitors[i].getName());
+            int finalI = i;
+            item.addActionListener(e -> {
+                String[] cmd = setMainDisplayCmd.clone();
+                cmd[2] = monitors[finalI].getId();
+                try {
+                    Runtime.getRuntime().exec(cmd);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             setMainMenu.add(item);
         }
         MenuItem exitItem = new MenuItem("Exit");
