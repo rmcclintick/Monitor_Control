@@ -2,14 +2,20 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 
 public class Main {
-
+    private final static String[] getListCmd = new String[]{"multimonitortool-x64/MultiMonitorTool.exe",  "/stabular", "output.txt"};
     public static void main(String[] args)
     {
+        try {
+            Runtime.getRuntime().exec(getListCmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        Monitor[] monitors = ListReader.readMonitorList("multimonitortool-x64/output.txt");
+        Monitor[] monitors = ListReader.readMonitorList("output.txt");
         createSysTray(monitors);
     }
 
@@ -28,8 +34,7 @@ public class Main {
 
         // Create a pop-up menu components
         MenuItem configItem = new MenuItem("Configure");
-//        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
-//        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
+
         Menu toggleMenu = new Menu("Toggle Display");
         for (int i = 0; i < monitors.length; i++)
         {
@@ -37,10 +42,7 @@ public class Main {
             if(monitors[i].isEnabled()) item.setState(true);
             toggleMenu.add(item);
         }
-//        MenuItem item1 = new MenuItem("Monitor");
-//        MenuItem item2 = new MenuItem("Monitor");
-//        MenuItem item3 = new MenuItem("Monitor");
-//        MenuItem item4 = new MenuItem("Monitor");
+
         Menu setMainMenu = new Menu("Set Main Display");
         for (int i = 0; i < monitors.length; i++)
         {
@@ -51,16 +53,12 @@ public class Main {
         MenuItem exitItem = new MenuItem("Exit");
 
         //Add components to pop-up menu
-//        popup.addSeparator();
-//        popup.add(cb1);
-//        popup.add(cb2);
         popup.add(toggleMenu);
-//        toggleMenu.add(item1);
-//        toggleMenu.add(item2);
+
         popup.add(setMainMenu);
-//        setMainMenu.add(item3);
-//        setMainMenu.add(item4);
+
         popup.addSeparator();
+
         popup.add(configItem);
         popup.add(exitItem);
         trayIcon.setPopupMenu(popup);
