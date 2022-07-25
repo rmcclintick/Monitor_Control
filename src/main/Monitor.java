@@ -2,7 +2,7 @@ package main;
 
 public class Monitor {
     private String name;
-    private int id;
+    private String id;
     private boolean isEnabled;
     private boolean isMain;
 
@@ -15,16 +15,16 @@ public class Monitor {
         this.name = name;
     }
 
-    public int getId() {
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
     }
 
     public void setEnabled(boolean enabled) {
@@ -39,11 +39,16 @@ public class Monitor {
         isMain = main;
     }
 
-    public Monitor(String name, int id, boolean isEnabled, boolean isMain)
+    public Monitor(String name, String id, boolean isEnabled, boolean isMain)
     {
         this.name = name;
         this.id = id;
         this.isEnabled = isEnabled;
         this.isMain = isMain;
+    }
+
+    public String toString()
+    {
+        return String.format("Index: %s, Name: %s, Active: %s, Main: %s\n", this.id, this.name, this.isEnabled, this.isMain);
     }
 }
