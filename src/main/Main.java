@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class Test {
+public class Main {
     public static void main(String[] args)
     {
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
@@ -22,26 +22,27 @@ public class Test {
         MenuItem configItem = new MenuItem("Configure");
 //        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
 //        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
-        Menu displayMenu = new Menu("Display");
-        MenuItem errorItem = new MenuItem("Error");
-        MenuItem warningItem = new MenuItem("Warning");
-        MenuItem infoItem = new MenuItem("Info");
-        MenuItem noneItem = new MenuItem("None");
+        Menu toggleMenu = new Menu("Toggle Display");
+        MenuItem item1 = new MenuItem("Monitor");
+        MenuItem item2 = new MenuItem("Monitor");
+        MenuItem item3 = new MenuItem("Monitor");
+        MenuItem item4 = new MenuItem("Monitor");
+        Menu setMainMenu = new Menu("Set Main Display");
         MenuItem exitItem = new MenuItem("Exit");
 
         //Add components to pop-up menu
-        popup.add(configItem);
 //        popup.addSeparator();
 //        popup.add(cb1);
 //        popup.add(cb2);
+        popup.add(toggleMenu);
+        toggleMenu.add(item1);
+        toggleMenu.add(item2);
+        popup.add(setMainMenu);
+        setMainMenu.add(item3);
+        setMainMenu.add(item4);
         popup.addSeparator();
-        popup.add(displayMenu);
-        displayMenu.add(errorItem);
-        displayMenu.add(warningItem);
-        displayMenu.add(infoItem);
-        displayMenu.add(noneItem);
+        popup.add(configItem);
         popup.add(exitItem);
-
         trayIcon.setPopupMenu(popup);
 
         try {
@@ -53,7 +54,7 @@ public class Test {
 
     //Obtain the image URL
     protected static Image createImage(String path, String description) {
-        URL imageURL = Test.class.getResource(path);
+        URL imageURL = Main.class.getResource(path);
 
         if (imageURL == null) {
             System.err.println("Resource not found: " + path);
