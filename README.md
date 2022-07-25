@@ -9,9 +9,10 @@ It allows the user to quickly enable/disable monitors as well as set the main mo
 ### Currently working
 * Reads monitor list from nirsoft's [MultiMonitorTool](https://www.nirsoft.net/utils/multi_monitor_tool.html)
 * System tray menu UI
+* Toggle each display from system tray
 
 ### To Do
-* enable eventListeners in system tray menu
+* enable eventListeners in system tray menu to set main monitor
 * configuration menu
   * Custom Labels for each monitor
   * Custom presets for quick changing multiple monitors state at once
