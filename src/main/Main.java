@@ -2,11 +2,14 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.URL;
 
 public class Main {
     private final static String[] getListCmd = new String[]{"multimonitortool-x64/MultiMonitorTool.exe",  "/stabular", "output.txt"};
+    private final static String[] toggleDisplayCmd = new String[]{"multimonitortool-x64/MultiMonitorTool.exe",  "/switch", ""};
     public static void main(String[] args)
     {
         try {
@@ -40,14 +43,25 @@ public class Main {
         {
             CheckboxMenuItem item = new CheckboxMenuItem(monitors[i].getName());
             if(monitors[i].isEnabled()) item.setState(true);
+            int finalI = i;
+            item.addItemListener(e -> {
+                String[] cmd = toggleDisplayCmd.clone();
+                cmd[2] = monitors[finalI].getId();
+                System.out.println("Attempting toggle on: " + monitors[finalI]);
+                try {
+                    Runtime.getRuntime().exec(cmd);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
             toggleMenu.add(item);
         }
 
         Menu setMainMenu = new Menu("Set Main Display");
-        for (int i = 0; i < monitors.length; i++)
-        {
-            CheckboxMenuItem item = new CheckboxMenuItem(monitors[i].getName());
-            if (monitors[i].isMain()) item.setState(true);
+        for (Monitor monitor : monitors) {
+            CheckboxMenuItem item = new CheckboxMenuItem(monitor.getName());
+            if (monitor.isMain()) item.setState(true);
             setMainMenu.add(item);
         }
         MenuItem exitItem = new MenuItem("Exit");
