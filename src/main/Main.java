@@ -5,9 +5,16 @@ import java.awt.*;
 import java.net.URL;
 
 public class Main {
+
     public static void main(String[] args)
     {
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        Monitor[] monitors = ListReader.readMonitorList("multimonitortool-x64/output.txt");
+        createSysTray(monitors);
+    }
+
+    private static void createSysTray(Monitor[] monitors)
+    {
         //Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
@@ -24,11 +31,23 @@ public class Main {
 //        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
 //        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
         Menu toggleMenu = new Menu("Toggle Display");
-        MenuItem item1 = new MenuItem("Monitor");
-        MenuItem item2 = new MenuItem("Monitor");
-        MenuItem item3 = new MenuItem("Monitor");
-        MenuItem item4 = new MenuItem("Monitor");
+        for (int i = 0; i < monitors.length; i++)
+        {
+            CheckboxMenuItem item = new CheckboxMenuItem(monitors[i].getName());
+            if(monitors[i].isEnabled()) item.setState(true);
+            toggleMenu.add(item);
+        }
+//        MenuItem item1 = new MenuItem("Monitor");
+//        MenuItem item2 = new MenuItem("Monitor");
+//        MenuItem item3 = new MenuItem("Monitor");
+//        MenuItem item4 = new MenuItem("Monitor");
         Menu setMainMenu = new Menu("Set Main Display");
+        for (int i = 0; i < monitors.length; i++)
+        {
+            CheckboxMenuItem item = new CheckboxMenuItem(monitors[i].getName());
+            if (monitors[i].isMain()) item.setState(true);
+            setMainMenu.add(item);
+        }
         MenuItem exitItem = new MenuItem("Exit");
 
         //Add components to pop-up menu
@@ -36,11 +55,11 @@ public class Main {
 //        popup.add(cb1);
 //        popup.add(cb2);
         popup.add(toggleMenu);
-        toggleMenu.add(item1);
-        toggleMenu.add(item2);
+//        toggleMenu.add(item1);
+//        toggleMenu.add(item2);
         popup.add(setMainMenu);
-        setMainMenu.add(item3);
-        setMainMenu.add(item4);
+//        setMainMenu.add(item3);
+//        setMainMenu.add(item4);
         popup.addSeparator();
         popup.add(configItem);
         popup.add(exitItem);
